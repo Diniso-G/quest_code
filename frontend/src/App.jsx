@@ -1,4 +1,61 @@
 import {Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import {AuthProvider, useAuth } from "./AuthContext";
-import Login from "/.pages/Login"
+import Login from "/.pages/Login";
+import Dashboard from './pages/Dashboard';
 
+function TopBar() {
+    const {user, logout} = useAuth();
+    const location = useLocation();
+    const isActive = (path)=> location.pathname === path;
+
+    return (
+        <div className="topbar">
+            <Link to="/" className="brand">
+                <span className="brand-mrk">[]</span>
+                QUEST_CODE
+            </Link>
+            {user && (
+                <>
+                    <div className="nav-links">
+                        <Link to="dashboard" className={isActive("/dashboard") ? "active" : ""}>Dasboard</Link> 
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}
+
+function PrivateRoute({ children}) {
+    const { user, loading} = useAuth();
+    if (loading) {
+        return (<div>Loading...</div>);
+    }
+    if (!user) {
+        return (<Navigate to="/login" replace/>);
+    }
+    return children;
+}
+
+function AppRoutes() {
+    const {user, loading} = useAuth();
+    return (
+        <div className="shell">
+            <TopBar />
+            <main className="content">
+                <Routes>
+                    <Route path='/' element={loading? null: <Navigate to={user ? "/dashboard":"/login"} replace />} />
+                    <Route path='/register' element={<Registration/>}/>
+                    <Route path='/login' element={<Login/>}/>
+                </Routes>
+            </main>
+        </div>
+    );
+}
+
+export default function App() {
+    return (
+        <AuthProvider>
+            <AppRoutes />
+        </AuthProvider>
+    );
+}
