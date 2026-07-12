@@ -29,7 +29,7 @@ export default function Login() {
         } finally {
             setBusy(false);
         }
-    };
+    }
 
     return (
         <div className="auth-card">
