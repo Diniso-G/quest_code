@@ -39,11 +39,11 @@ export default function Login() {
             <form onSubmit={handleSubmit}>
                 <div className="field">
                     <label>Email</label>
-                    <input type="email" value={email}/>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>    
                 <div className="field">
                     <label>Password</label>
-                    <input type="password" value={email}/>
+                    <input type="password" value={email} onChange={(e) => setPassword(e.target.value)} required />
                 </div> 
                 <button className="btn btn-primary">
                     {busy ? "Signing in...": "Sign in"}

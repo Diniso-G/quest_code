@@ -1,59 +1,46 @@
-# Code from business_dashboard
-#GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
-
-import os
-from dotenv import load_dotenv
-from datetime import datetime, timedelta
-
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
-from passlib.context import CryptContext
-from jose import jwt, JWTError
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, EmailStr
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from sqlalchemy.util import deprecated
 
-load_dotenv()
-SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-if not SECRET_KEY:
-    raise RuntimeError("JWT_SECRET_KEY is not set in .env")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
+from app.models import SessionLocal, User
+from app.auth import hash_password, verify_password, create_access_token
 
-oauth_scheme = OAuth2PasswordBearer(tokenUrl="login")
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+router = APIRouter()
 
-def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
-
-def create_access_token(data: dict) -> str:
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-def decode_access_token(token:str) -> dict | None:
+def get_db():
+    db = SessionLocal()
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
-    except JWTError:
-        return None
-
-def get_current_user(token:str = Depends(oauth_scheme)):
-    """Dependency to protect routes. Raises 401 if the token is missing or invalid."""
-    from app.models import SessionLocal, User #Avoids Circular imports //RESEARCH MORE ON TOPIC
-    payload = decode_access_token(token)
-    if payload is None:
-        raise HTTPException(status_code=401, detail="Invalid or expeired token")
-
-    email = payload.get("sub")
-    db: Session = SessionLocal()
-    try:
-        user = db.query(User).filter(User.email == email).first()
-        if user is None:
-            raise HTTPException(status_code=401, detail="User not found")
-        return user
+        yield db
     finally:
         db.close()
+
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+@router.post("/register")
+def register(payload: RegisterRequest, db:Session = Depends(get_db)):
+    existing = db.query(User).filter(User.email==payload.email).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    user = User(email=payload.email, hashed_password=hash_password(payload.password),)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    token = create_access_token({"sub": user.email})
+    return {"access_token": token, "token_type": "bearer"}
+
+@router.post("/login")
+def login(payload: LoginRequest, db:Session = Depends(get_db)):
+    user = db.query(User).filter(User.email==payload.email).first()
+    if not user or not verify_password(payload.password, user.hashed_password):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    token = create_access_token({"sub": user.email})
+    return {"access_token": token, "token_type": "bearer"}
