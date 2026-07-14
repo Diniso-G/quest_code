@@ -4,16 +4,16 @@
 
 /*root from LMS PROJECT*/
 :root {
-    --bg-base: #0f1629;
-    --bg-surface: #1a2340;
+    --bg-base: #fbf6ee;
+    --bg-surface: #ffffff;
     --slate: #94a3b8;
-    --blue: #3b83f6;
+    --blue: #3e7c8c;
     --blue-dark: #2563eb;
     --card: #ffffff;
-    --border: #2a3a5c;
+    --border: #e7dcc8;
     --green: #10b981;
-    --text: #1e293b;
-    --text-light: #64748b;
+    --text: #2e2417;
+    --text-light: #7a6c55;
     --radius: 12px;
 }
 
@@ -196,6 +196,7 @@ body {
     font-size: 28px;
     color: #ffffff;
 }
+
 
 .form-group {
     margin-bottom: 15px;

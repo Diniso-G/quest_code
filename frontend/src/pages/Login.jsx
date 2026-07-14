@@ -32,25 +32,36 @@ export default function Login() {
     }
 
     return (
-        <div className="auth-card">
-            <h2> Welcome back</h2>
-            <p> Sign in to pick up where your last case left off </p>
-            {error && <div className="error-banner"> {error}</div>}
-            <form onSubmit={handleSubmit}>
-                <div className="field">
-                    <label>Email</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                </div>    
-                <div className="field">
-                    <label>Password</label>
-                    <input type="password" value={email} onChange={(e) => setPassword(e.target.value)} required />
-                </div> 
-                <button className="btn btn-primary">
-                    {busy ? "Signing in...": "Sign in"}
-                </button>
-            </form>         
-            <p>No account? <Link to="/register">Create an Account</Link>
-            </p>
+        <div id="authScreen">
+            <div class="auth-wrap">
+                <div class="auth-brand">
+                    <h1>QUEST_CODE</h1>
+                    <p>Become a code detective</p>
+                </div>
+                <div className="auth-card">
+                    <div id="authMessage" class="auth-error"></div>
+                    <div id="loginForm">
+                        <h2> Welcome back</h2>
+                        <p> Sign in to pick up where your last case left off </p>
+                        {error && <div className="error-banner"> {error}</div>}
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>Email</label>
+                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                            </div>    
+                            <div className="form-group">
+                                <label>Password</label>
+                                <input type="password" value={email} onChange={(e) => setPassword(e.target.value)} required />
+                            </div> 
+                            <button className="btn btn-primary">
+                            {busy ? "Signing in...": "Sign in"}
+                            </button>
+                        </form>         
+                        <p>No account? <Link to="/register">Create an Account</Link>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

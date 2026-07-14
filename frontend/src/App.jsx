@@ -10,8 +10,8 @@ function TopBar() {
     const isActive = (path)=> location.pathname === path;
 
     return (
-        <div className="topbar">
-            <Link to="/" className="brand">
+        <div className="app-topbar">
+            <Link to="/" className="topbar-brand">
                 <span className="brand-mrk">[]</span>
                 QUEST_CODE
             </Link>
