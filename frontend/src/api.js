@@ -12,4 +12,4 @@ api.interceptors.request.use((config) => {
 });
 
 export default api;
-export {API_URL};
+//export {API_URL};

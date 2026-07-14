@@ -4,6 +4,11 @@ pandas
 fastapi
 uvicorn[standard]
 sqlalchemy
+pydantic
+pydantic-settings
+email-validation
+passlib[bcrypt]
+bcrypt
 plotly
 openpyxl
 jinja2

@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import api from "../api";
 import {useAuth} from "../AuthContext";
 
-export default function Register() {
+export default function Registration() {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
