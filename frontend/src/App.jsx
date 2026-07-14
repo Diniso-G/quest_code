@@ -44,9 +44,10 @@ function AppRoutes() {
             <TopBar />
             <main className="content">
                 <Routes>
-                    <Route path='/' element={loading? null: <Navigate to={user ? "/dashboard":"/login"} replace />} />
+                    <Route path='/' element={loading ? null: <Navigate to={user ? "/dashboard" : "/login"} replace />} />
                     <Route path='/register' element={<Registration/>}/>
                     <Route path='/login' element={<Login/>}/>
+                    <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
                 </Routes>
             </main>
         </div>

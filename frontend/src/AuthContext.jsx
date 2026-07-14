@@ -24,6 +24,7 @@ export function AuthProvider({children}) {
         } finally {
             setLoading(false);
         }*/
+       setLoading(false);
     }, []);
 
     useEffect(() => {
