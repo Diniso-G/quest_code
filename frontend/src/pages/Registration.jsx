@@ -27,6 +27,10 @@ export default function Registration() {
             login(resp.data.access_token);
             navigate("/dashboard");
         } catch (err) {
+            console.log("Registration error: ", err);
+            console.log("response: ", err.response);
+            console.log("data: ", err.response?.data);
+
             const detail = err.response?.data?.detail;
             setError(typeof detail === "string" ? detail: "Registration failed");
         } finally {
@@ -35,29 +39,40 @@ export default function Registration() {
     };
 
     return (
-        <div className="auth-card">
-            <h2> Create an account</h2>
-            <p> Create account and start hunting bugs. </p>
-            {error && <div className="error-banner"> {error}</div>}
-            <form onSubmit={handleSubmit}>
-                <div className="field">
-                    <label>Email</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                </div>    
-                <div className="field">
-                    <label>Username</label>
-                    <input value={username} onChange={(e) => setUsername(e.target.value)} required />
-                </div> 
-                <div className="field">
-                    <label>Password</label>
-                    <input type="password" value={email} onChange={(e) => setPassword(e.target.value)} required />
-                </div> 
-                <button className="btn btn-primary">
-                    {busy ? "Creating...": "Create account"}
-                </button>
-            </form>         
-            <p>Already have an account? <Link to="/login">Sign in</Link>
-            </p>
+        <div id ="authScreen">
+            <div className="auth-wrap">
+                <div className="auth-brand">
+                    <h1>QUEST_CODE</h1>
+                    <p>Become a code detective</p>
+                </div>
+                <div className="auth-card">
+                    <div id="authMessage" className="auth-error"></div>
+                    <div id="registerForm">
+                        <h2> Create an account</h2>
+                        <p> Create account and start hunting bugs. </p>
+                        {error && <div className="error-banner"> {error}</div>}
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>Email</label>
+                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                            </div>    
+                            <div className="form-group">
+                                <label>Username</label>
+                                <input value={username} onChange={(e) => setUsername(e.target.value)} required />
+                            </div> 
+                            <div className="form-group">
+                                <label>Password</label>
+                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                            </div> 
+                            <button className="btn btn-primary">
+                            {busy ? "Creating...": "Create account"}
+                            </button>
+                        </form>         
+                        <p>Already have an account? <Link to="/login">Sign in</Link>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

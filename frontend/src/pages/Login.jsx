@@ -51,7 +51,7 @@ export default function Login() {
                             </div>    
                             <div className="form-group">
                                 <label>Password</label>
-                                <input type="password" value={email} onChange={(e) => setPassword(e.target.value)} required />
+                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                             </div> 
                             <button className="btn btn-primary">
                             {busy ? "Signing in...": "Sign in"}

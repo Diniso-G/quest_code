@@ -6,7 +6,8 @@ uvicorn[standard]
 sqlalchemy
 pydantic
 pydantic-settings
-email-validation
+email-validator
+python-jose[cryptography]
 passlib[bcrypt]
 bcrypt
 plotly

@@ -3,12 +3,22 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from datetime import datetime
+from app.config import settings
 
-DATABASE_URL = "sqlite:///./dashboard.db"
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(bind = engine)
+#DATABASE_URL = "sqlite:///./dashboard.db"
+connect_args = {"check_same_thread": False} if settings.database_url.startswith("sqlite") else {}
+engine = create_engine(settings.database_url, connect_args=connect_args)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind = engine)
 Base = declarative_base()
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+'''
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
@@ -28,4 +38,5 @@ class Report(Base):
     owner = relationship("User", back_populates="reports")
 
 Base.metadata.create_all(engine)
+'''
 
