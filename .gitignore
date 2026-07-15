@@ -20,5 +20,13 @@ node_modules/
 dist/
 build/
 
+# IntelliJ / PyCharm / Android Studio
+.idea/
+*.iml
+
+# Android
+.gradle/
+local.properties
+
 #Logs
 *.log
