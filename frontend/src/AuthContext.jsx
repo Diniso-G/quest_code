@@ -9,7 +9,7 @@ export function AuthProvider({children}) {
     const [loading, setLoading] = useState(true);
 
     const refreshUser = useCallback(async () => {
-/*        
+     
         if (!localStorage.getItem("cq_token")) {
             setUser(null);
             setLoading(false);
@@ -23,8 +23,7 @@ export function AuthProvider({children}) {
             logout();
         } finally {
             setLoading(false);
-        }*/
-       setLoading(false);
+        }
     }, []);
 
     useEffect(() => {
@@ -32,14 +31,14 @@ export function AuthProvider({children}) {
 
     function login(newToken) {
         localStorage.setItem("cq_token", newToken);
-        //setToken(newToken);
-        //refreshUser();
-        setUser({ loggedIn: true});
+        setToken(newToken);
+        refreshUser();
+        //setUser({ loggedIn: true});
     }
 
     function logout() {
         localStorage.removeItem("cq_token");
-        //setToken(null);
+        setToken(null);
         setUser(null);
     }
 

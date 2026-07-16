@@ -4,16 +4,16 @@
 
 /*root from LMS PROJECT*/
 :root {
-    --bg-base: #fbf6ee;
-    --bg-surface: #ffffff;
+    --bg-base: #12141c;
+    --bg-surface: #1a1d29;
     --slate: #94a3b8;
     --blue: #3e7c8c;
     --blue-dark: #2563eb;
     --card: #ffffff;
     --border: #e7dcc8;
     --green: #10b981;
-    --text: #2e2417;
-    --text-light: #7a6c55;
+    --text: #e8e6e3;
+    --text-light: #8b8d98;
     --radius: 12px;
 }
 

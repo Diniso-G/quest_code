@@ -55,9 +55,10 @@ def get_current_user(token:str = Depends(oauth_scheme)):
         raise HTTPException(status_code=401, detail="Invalid or expeired token")
 
     email = payload.get("sub")
+    user_id = payload.get("sub")
     db: Session = SessionLocal()
     try:
-        user = db.query(User).filter(User.email == email).first()
+        user = db.query(User).filter(User.id == int(user_id)).first()
         if user is None:
             raise HTTPException(status_code=401, detail="User not found")
         return user
