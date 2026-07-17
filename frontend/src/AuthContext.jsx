@@ -16,7 +16,7 @@ export function AuthProvider({children}) {
             return;
         }
         try {
-            const resp = await api.get("/user/me");
+            const resp = await api.get("/users/me");
             setUser(resp.data);
         }
         catch {
