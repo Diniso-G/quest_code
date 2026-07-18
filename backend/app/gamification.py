@@ -24,7 +24,7 @@ def _award(db: Session, user:models.User, code:str, unlocked: list):
         return
     already = db.query(models.UserAchievement).filter_by(user_id=user_i, achievement_id=achh.id).first()
     if not already:
-        db.add(models.UserAchievement(user_id=user_i, achievement_id=achh.id))
+        db.add(models.UserAchievement(user_id=user.id, achievement_id=achh.id))
         unlocked.append(achh.title)
 
 def update_streak(user: models.User):
