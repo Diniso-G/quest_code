@@ -32,7 +32,7 @@ def update_streak(user: models.User):
     if user.last_active_date is None:
         user.streak = 1
     else:
-        delta = now.data() - user.last_active_date.date()
+        delta = now.date() - user.last_active_date.date()
         if delta == timedelta(days=0):
             pass
         elif delta == timedelta(days=1):
