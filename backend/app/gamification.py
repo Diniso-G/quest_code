@@ -9,11 +9,11 @@ XP_PER_LEVEL = 100
 
 ACHIEVEMENT_DEFS = [
     ("FIRST_BUG_FIXED", "First Bug Fixed", "Fix your very first bug", "Crwn 1"),
-    ("BUGS_100", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
-    ("SQL_MASTER", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
-    ("PYTHON DETECTIVE", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
-    ("FIRST_BUG_FIXED", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
-    ("FIRST_BUG_FIXED", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
+    ("BUGS_100", "100 Bugs Solved", "Fix 100 bugs total", "Crwn 1"),
+    ("SQL_MASTER", "SQL Master", "Solve 10 SQL challenges", "Crwn 1"),
+    ("PYTHON DETECTIVE", "Python Detective", "Solve 10 Python challenges", "Crwn 1"),
+    ("DEBUGGING_EXPERT", "Debugging Expert", "Reach Advanced difficulty and solve it correctly", "Crwn 1"),
+    ("STREAK_30", "30-Day Streak", "Maintain a 30 day activity streak", "Crwn 1"),
 ]
 
 def ensure_achievement_defs(db: Session):

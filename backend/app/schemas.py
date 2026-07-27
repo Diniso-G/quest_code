@@ -40,7 +40,7 @@ class ChallengeOut(BaseModel):
     difficulty: str
     description: str
     buggy_code: str
-    buy_types: Optional[str]
+    bug_types: Optional[str] = None
     created_at: datetime
 
     class Config:
@@ -54,8 +54,22 @@ class HintResponse(BaseModel):
     hint_number: int
     hint_text: str
 
+class SubmissionCreate(BaseModel):
+    challenge_id: int
+    user_answer: str
 
-
+class SubmissionResult(BaseModel):
+    is_correct: bool
+    ai_score: float
+    ai_feedback: str
+    correct_solution: str
+    explanation: str
+    xp_awarded: int
+    new_level: int
+    new_xp: int
+    new_streak: int
+    achievements_unlocked: List[str] = []
+    
 
 class DashboardStats(BaseModel):
     xp: int

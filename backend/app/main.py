@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base, SessionLocal
 from app import models
 from app.gamification import ensure_achievement_defs
-from app.routers import auth, users, challenges
+from app.routers import auth, users, challenges, submissions
 
 Base.metadata.create_all(bind=engine)
 
@@ -16,6 +16,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"],allow_credentials=True,al
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(challenges.router)
+app.include_router(submissions.router)
 
 @app.on_event("startup")
 def seed_achievements():

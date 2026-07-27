@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base
@@ -20,7 +20,7 @@ class User(Base):
     challenges_com = Column(Integer, default= 0)
     bugs_fixed = Column(Integer, default= 0)
 
-    #submissions = relationship("Submission", back_populates="user") 
+    submissions = relationship("Submission", back_populates="user") 
     achievements = relationship("UserAchievement", back_populates="user")
 
 class Challenges(Base):
@@ -40,8 +40,25 @@ class Challenges(Base):
     hint_3 = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    #submissions = relationship("Submission", back_populates="user") 
+    submissions = relationship("Submission", back_populates="challenge") 
 
+class Submission(Base):
+    __tablename__ = "Submissions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    challenge_id = Column(Integer, ForeignKey("challenges.id"), nullable=False) 
+
+    user_answer = Column(Text, nullable=False)
+    is_correct = Column(Boolean, nullable=False)
+    ai_feedback = Column(Text, nullable=True)
+    ai_score = Column(Float, nullable=True)
+    hints_used = Column(Integer, default=0)
+    xp_awarded = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="submissions")
+    challenge = relationship("Challenges", back_populates="submissions")
 
 class Achievement(Base):
     __tablename__ = "achievements"

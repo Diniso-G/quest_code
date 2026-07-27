@@ -4,10 +4,11 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.auth import get_current_user
 from app import models, schemas
+from app.ai.challenge_generator import generate_challenge
 
 router = APIRouter(prefix="/challenges", tags=["challenges"])
 
-VALID_LANGUAGES = {"Python", "Java", "JavaScrip", "C#", "C++", "SQL"}
+VALID_LANGUAGES = {"Python", "Java", "JavaScript", "C#", "C++", "SQL"}
 VALID_DIFFICULTIES = {"Beginner", "Intermediate", "Advanced"}
 
 @router.post("/generate", response_model=schemas.ChallengeOut)
@@ -27,7 +28,7 @@ def generate( payload: schemas.ChallengeGenerateRequest, db: Session =Depends(ge
     
     db.add(challenge)
     db.commit()
-    db.refreash(challenge)
+    db.refresh(challenge)
     return challenge
 
 
@@ -53,7 +54,7 @@ def get_challenge(challenge_id: int, db: Session = Depends(get_db),
 def get_hint(challenge_id: int, hint_number: int, db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),):
     if hint_number not in (1, 2, 3):
-        raise HTTPException(400, "hint_number must be 1, 3 or 3")
+        raise HTTPException(400, "hint_number must be 1, 2 or 3")
     challenge = db.query(models.Challenges).get(challenge_id)
     if not challenge:
         raise HTTPException(404, "Challenge not found")
