@@ -3,6 +3,7 @@ import {AuthProvider, useAuth } from "./AuthContext";
 import Login from "./pages/Login";
 import Dashboard from './pages/Dashboard';
 import Registration from './pages/Registration';
+import ChallengeDetail from "./pages/ChallengeDetail";
 import Challenges from './pages/Challenges';
 import Leaderboard from './pages/Leaderboard';
 
@@ -60,7 +61,8 @@ function AppRoutes() {
                     <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
                     <Route path='/challenges' element={<PrivateRoute><Challenges /></PrivateRoute>} />
                     <Route path="/leaderboard" element={<PrivateRoute><Leaderboard /></PrivateRoute>} />
-                
+                    <Route path='/challenges/:id' element={<PrivateRoute><ChallengeDetail /></PrivateRoute>} />
+                    
                 </Routes>
             </main>
         </div>
