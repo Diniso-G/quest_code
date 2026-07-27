@@ -64,10 +64,73 @@ export default function ChallengeDetail(){
                 <div className="case-id">CASE-{String(challenge.id).padStart(4, "0")} - {challenge.language}</div>
                 <h1>{challenge.title}</h1>
                 <span className={`tag difficulty-${challenge.difficulty}`}>{challenge.difficulty}</span>
+                <p>{challenge.description}</p>
             </div>
+
+            {error && <div className="error-banner">{error}</div>}
+
+            <div className="section-title">Evidence (the buggy code)</div>
+            <div className="code-block"> {challenge.buggy_code}</div>
+
+            {!result && (
+                <>
+                    <div className="section-title">Hints ({hintsUsed}/3 used - using hints reduces XP earned)</div>
+                    {hints.map((h, i) => (
+                        <div key={i} className="case-card">
+                            <div className="case-id">HINT {i + 1}</div>
+                            <p>{h}</p>
+                        </div>
+                    ))}
+                    {hints.length < 3 && (
+                        <button className="btn" onClick={revealNextHint}>Reveal Hint {hints.length + 1}</button>
+                    )}
+
+                    <div className="section-title">Your fix</div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="field">
+                            <textarea rows={10} value={answer} onChange={(e) => setAnswer(e.target.value)} 
+                                placeholder="Paste the corrected code, or explain the bug and how you'd fix it..."
+                                required />
+                        </div>
+                        <button className="btn btn-primary" disabled={submitting}>
+                            {submitting ? "Reviewing..." : "Submit fix"}
+                        </button>
+                    </form>
+                </>
+            )}
+
+            {result && (
+                <div className="case-card">
+                    <div className="case-id">VERDICT</div>
+                    <div className="case-title">
+                        {result.is_correct ? "Case closed - bug fixed" : "Not quite - case still open"}
+                    </div>
+                    <p>Score: {result.ai_score}/100</p>
+                    <p>{result.ai_feedback}</p>
+
+                    {result.xp_awarded > 0 && (
+                        <p>+{result.xp_awarded} XP - Level {result.new_level} - FRE {result.new_streak} day streak</p>
+
+                    )}
+
+                    {result.achievements_unlocked.length > 0 && (
+                        <div>
+                            {result.achievements_unlocked.map((a) => (
+                                <span key={a} className="achievement-chip"> Troph NEW: {a}</span>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="section-title"> Correct solution</div>
+                    <div className="code-block">{result.correct_solution}</div>
+
+                    <div className="section-title"> Explanation</div>
+                    <p>{result.explanation}</p>
+
+                    <Link to="/challenges" className="btn btn-primary">
+                    Find another case -</Link>
+                </div>
+            )}
         </div>
-
-
     )
-
 }

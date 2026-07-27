@@ -33,7 +33,7 @@ def submit_answer(payload: schemas.SubmissionCreate, hints_used: int = 0, db: Se
     db.commit()
 
     return schemas.SubmissionResult(
-        ai_correct=review["is_correct"],
+        is_correct=review["is_correct"],
         ai_score=review["score"],
         ai_feedback=review["feedback"],
         correct_solution=challenge.solution_code,

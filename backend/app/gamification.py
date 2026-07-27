@@ -92,7 +92,7 @@ def apply_submission_result(
             py_solved = (
                 db.query(models.Submission).join(models.Challenges).
                 filter(models.Submission.user_id == user.id,
-                    models.Submisson.is_correct ==True,
+                    models.Submission.is_correct ==True,
                     models.Challenges.language == "Python",).count()
             )
             if py_solved >= 10:
