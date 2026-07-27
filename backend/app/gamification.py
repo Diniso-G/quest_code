@@ -7,7 +7,14 @@ from app import models
 XP_BY_DIFFICULTY = {"Beginner": 10, "Intermediate": 25, "Advanced": 50}
 XP_PER_LEVEL = 100
 
-ACHIEVEMENT_DEFS = [("FIRST_BUG_FIXED", "First Bug Fixed", "Fix your very first bug", "Crwn 1")]
+ACHIEVEMENT_DEFS = [
+    ("FIRST_BUG_FIXED", "First Bug Fixed", "Fix your very first bug", "Crwn 1"),
+    ("BUGS_100", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
+    ("SQL_MASTER", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
+    ("PYTHON DETECTIVE", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
+    ("FIRST_BUG_FIXED", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
+    ("FIRST_BUG_FIXED", "First Bug Fixed", "Fix your very first bug", "Crwn 1")
+]
 
 def ensure_achievement_defs(db: Session):
     '''Seed the achievement table'''
@@ -41,5 +48,57 @@ def update_streak(user: models.User):
             user.streak = 1
     user.last_active_date = now
 
-    
+def apply_submission_result(
+    db: Session, 
+    user: models.User, 
+    challenge: models.Challenges, 
+    is_correct: bool,
+    hints_used: int,
+) -> tuple[int, list]:
+    unlocked: list[str] = []
+    xp_awarded = 0 
+
+    if is_correct:
+        base_xp = XP_BY_DIFFICULTY.get(challenge.difficulty, 10)
+        penalty = min(hints_used, 3) * 0.15
+        xp_awarded = max(1, round(base_xp * (1 - penalty)))
+
+        user.xp += xp_awarded
+        user.level = user.xp // XP_PER_LEVEL + 1
+        user.bugs_fixed += 1
+        user.challenges_com += 1
+        update_streak(user)
+
+        if user.bugs_fixed == 1:
+            _award(db, user, "FIRST_BUG_FIXED", unlocked)
+        if user.bugs_fixed >=100:
+            _award(db, user, "BUGS_100", unlocked)
+        if user.streak >=30:
+            _award(db, user, "STREAK_30", unlocked)
+        if challenge.difficulty == "Advanced":
+            _award(db, user, "DEBUGGING_EXPERT", unlocked)
+
+        if challenge.language.lower() == "sql":
+            sql_solved = (
+                db.query(models.Submission).join(models.Challenges).
+                filter(models.Submission.user_id == user.id,
+                    models.Submisson.is_correct ==True,
+                    models.Challenges.language == "SQL",).count()
+            )
+            if sql_solved >= 10:
+                _award(db, user, "SQL_MASTER", unlocked)
+
+        if challenge.language.lower() == "python":
+            py_solved = (
+                db.query(models.Submission).join(models.Challenges).
+                filter(models.Submission.user_id == user.id,
+                    models.Submisson.is_correct ==True,
+                    models.Challenges.language == "Python",).count()
+            )
+            if py_solved >= 10:
+                _award(db, user, "PYTHON_DETECTIVE", unlocked)
+
+    db.commit()
+    return xp_awarded, unlocked
+
 
