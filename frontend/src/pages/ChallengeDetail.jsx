@@ -132,5 +132,5 @@ export default function ChallengeDetail(){
                 </div>
             )}
         </div>
-    )
+    );
 }

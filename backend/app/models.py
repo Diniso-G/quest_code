@@ -43,7 +43,7 @@ class Challenges(Base):
     submissions = relationship("Submission", back_populates="challenge") 
 
 class Submission(Base):
-    __tablename__ = "Submissions"
+    __tablename__ = "submissions"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
