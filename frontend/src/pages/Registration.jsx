@@ -40,7 +40,7 @@ export default function Registration() {
 
     return (
         <div id ="authScreen">
-            <div className="auth-wrap">
+            <div className="auth-wrapper">
                 <div className="auth-brand">
                     <h1>QUEST_CODE</h1>
                     <p>Become a code detective</p>
@@ -68,7 +68,7 @@ export default function Registration() {
                             {busy ? "Creating...": "Create account"}
                             </button>
                         </form>         
-                        <p>Already have an account? <Link to="/login">Sign in</Link>
+                        <p className="auth-switch">Already have an account? <Link to="/login">Sign in</Link>
                         </p>
                     </div>
                 </div>

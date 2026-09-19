@@ -146,6 +146,7 @@ button {
 
 .brand-mrk {
     color: #546707;
+    display: none;
 }
 .topbar-brand {
     display: flex;

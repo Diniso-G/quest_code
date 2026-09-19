@@ -33,13 +33,13 @@ export default function Login() {
 
     return (
         <div id="authScreen">
-            <div class="auth-wrap">
-                <div class="auth-brand">
+            <div className="auth-wrapper">
+                <div className="auth-brand">
                     <h1>QUEST_CODE</h1>
                     <p>Become a code detective</p>
                 </div>
                 <div className="auth-card">
-                    <div id="authMessage" class="auth-error"></div>
+                    <div id="authMessage" className="auth-error"></div>
                     <div id="loginForm">
                         <h2> Welcome back</h2>
                         <p> Sign in to pick up where your last case left off </p>
@@ -57,7 +57,7 @@ export default function Login() {
                             {busy ? "Signing in...": "Sign in"}
                             </button>
                         </form>         
-                        <p>No account? <Link to="/register">Create an Account</Link>
+                        <p className="auth-switch">No account? <Link to="/register">Create an Account</Link>
                         </p>
                     </div>
                 </div>

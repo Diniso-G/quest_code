@@ -27,7 +27,7 @@ export default function Dashboard() {
                     <div className="stat-box">
                         <div className="num">{stats.level}</div>
                         <div className="label">Level</div>
-                        <div className="xp-bar"><div className="xp-bar-fill"/></div>
+                        <div className="xp-bar"><div className="xp-bar-fill" style={{width: `${xpPcct}%`}}/></div>
                     </div>
                     <div className="stat-box">
                         <div className="num">{stats.xp}</div>
@@ -45,7 +45,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="section-title">Achievements</div>
-                {stats.achievements.length === 0 ? (<p> No badges yet- solve your fest case to earn one</p>
+                {stats.achievements.length === 0 ? (<p> No badges yet- solve your first case to earn one.</p>
                 ) : (
                     <div>
                         {stats.achievements.map((a) => (<span key={a} className="achievement-chip"> Crwn {a}</span>

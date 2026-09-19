@@ -79,7 +79,7 @@ export default function Challenges(){
             ) : (
                 <div className="card-grid">
                     {challenges.map((c) => (
-                        <Link key={c.id} to={`/challenges/${c.id}`} className="card-case">
+                        <Link key={c.id} to={`/challenges/${c.id}`} className="case-card">
                             <div className="case-id">CASE-{String(c.id).padStart(4, "0")} . {c.language}</div>
                             <div className="case-title">{c.title}</div>
                             <span className={`tag difficulty-${c.difficulty}`}>{c.difficulty}</span>

@@ -109,8 +109,7 @@ export default function ChallengeDetail(){
                     <p>{result.ai_feedback}</p>
 
                     {result.xp_awarded > 0 && (
-                        <p>+{result.xp_awarded} XP - Level {result.new_level} - FRE {result.new_streak} day streak</p>
-
+                        <p>+{result.xp_awarded} XP - Level {result.new_level} - {result.new_streak} day streak</p>
                     )}
 
                     {result.achievements_unlocked.length > 0 && (
