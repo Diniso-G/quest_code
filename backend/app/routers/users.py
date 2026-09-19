@@ -17,10 +17,24 @@ def get_dashboard(current_user: models.User = Depends(get_current_user), db: Ses
     xp_to_next = XP_PER_LEVEL - (current_user.xp % XP_PER_LEVEL)
     achievements = (db.query(models.Achievement.title)
         .join(models.UserAchievement, models.UserAchievement.achievement_id == models.Achievement.id)
-        .filter(models. UserAchievement.user_id == current_user.id).all())
+        .filter(models.UserAchievement.user_id == current_user.id).all())
     return schemas.DashboardStats(xp=current_user.xp, level=current_user.level,
         streak=current_user.streak, challenges_com=current_user.challenges_com,
         bugs_fixed=current_user.bugs_fixed, xp_to_next_level=xp_to_next, achievements=[a[0] for a in achievements],)
+
+@router.get("/me/history", response_model=list[schemas.HistoryItem])
+def get_history(current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    rows = (db.query(models.Submission, models.Challenges)
+        .join(models.Challenges, models.Submission.challenge_id == models.Challenges.id)
+        .filter(models.Submission.user_id == current_user.id)
+        .order_by(models.Submission.created_at.desc()).all())
+    return [
+        schemas.HistoryItem(submission_id=sub.id, challenge_id=chal.id,
+        challenge_title=chal.title, difficulty=chal.difficulty,
+        language=chal.language, is_correct=sub.is_correct, xp_awarded=sub.xp_awarded, created_at=sub.created_at,
+        )
+        for sub, chal in rows
+    ]
 
 
 @router.get("/leaderboard")

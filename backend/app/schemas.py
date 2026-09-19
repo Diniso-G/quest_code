@@ -1,15 +1,28 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
+import re
+
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+def _validate_email(v: str) -> str:
+    if not EMAIL_RE.match(v):
+        raise ValueError("invalid email format")
+    return v
+
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    email: str
     username: str
     password: str = Field(min_length=8)
 
+    _validate_email = field_validator("email")(_validate_email)
+
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: str
     password: str
+
+    _validate_email = field_validator("email")(_validate_email)
 
 class Token(BaseModel):
     access_token: str
@@ -79,4 +92,17 @@ class DashboardStats(BaseModel):
     bugs_fixed: int
     xp_to_next_level: int
     achievements: List[str]
+
+class HistoryItem(BaseModel):
+    submission_id: int
+    challenge_id: int
+    challenge_title: str
+    difficulty: str
+    language: str
+    is_correct: bool
+    xp_awarded: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
 

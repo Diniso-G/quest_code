@@ -27,12 +27,18 @@ export default function Registration() {
             login(resp.data.access_token);
             navigate("/dashboard");
         } catch (err) {
-            console.log("Registration error: ", err);
-            console.log("response: ", err.response);
-            console.log("data: ", err.response?.data);
+            //console.log("Registration error: ", err);
+            //console.log("response: ", err.response);
+            //console.log("data: ", err.response?.data);
 
             const detail = err.response?.data?.detail;
-            setError(typeof detail === "string" ? detail: "Registration failed");
+            let message = "Registration Failed";
+            if (typeof detail == "string") {
+                message = detail;
+            } else if (Array.isArray(detail) && detail.length > 0) {
+                message = detail.map((d) => `${d.loc?.[d.loc.length - 1]}: ${d.msg}`).join(", ");
+            }
+            setError(message);
         } finally {
             setBusy(false);
         }

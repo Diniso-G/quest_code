@@ -125,14 +125,17 @@ _FALLBACK_BANK = [
 
 def generate_challenge(language: str, difficulty: str, topic: str | None = None) -> dict:
     if ai_available:
-        user_prompt = f"Language: {language}\nDifficulty: {difficulty}\n"
-        if topic:
-            user_prompt += f"Topic focus: {topic}\n"
-        raw = chat(SYSTEM_PROMPT, user_prompt, json_mode=True)
-        data = json.loads(raw)
-        data["language"] = language
-        data["difficulty"] = difficulty
-        return data
+        try:
+            user_prompt = f"Language: {language}\nDifficulty: {difficulty}\n"
+            if topic:
+                user_prompt += f"Topic focus: {topic}\n"
+            raw = chat(SYSTEM_PROMPT, user_prompt, json_mode=True)
+            data = json.loads(raw)
+            data["language"] = language
+            data["difficulty"] = difficulty
+            return data
+        except Exception as e:
+            print(f"AI challenge generation failed, using fallback bank: {e}")
 
     matches = [c for c in _FALLBACK_BANK if c["language"].lower() == language.lower()]
     if not matches:

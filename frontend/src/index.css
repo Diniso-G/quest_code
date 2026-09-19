@@ -38,9 +38,6 @@ html, body, #root {
 body {
     margin: 0;
     background: var(--ink);
-    background-image: 
-     radial-gradient(ellipse at 10% -10%, rgba(201, 138, 62, 0.07) 0%, transparent 45%),
-     linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, transparent 200px);
     color: var(--text);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
@@ -588,6 +585,47 @@ border-color: transparent;}
     }
 }
 
+
+.history-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.history-list {
+    margin-bottom: 8px;
+}
+
+.history-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.history-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.history-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-dim);
+}
+
+.history-status.ok {color: var(--teal);}
+.history-status.fail {color: var(--rust);}
 
 
 /*
